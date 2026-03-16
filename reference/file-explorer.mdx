@@ -1,0 +1,136 @@
+---
+title: "File Explorer (CCFXP)"
+description: "Complete reference for the built-in CCFXP directory browser in CCVim."
+---
+
+CCVim includes a built-in file explorer called **CCFXP** (version 0.12). It lets you browse, open, create, rename, and delete files without leaving the editor.
+
+---
+
+## Opening the explorer
+
+The file explorer opens automatically whenever CCVim is given a directory path:
+
+- **On launch:** `vim [directory]`
+- **From within the editor:** `:e [directory]`
+- **From within the editor:** `:tabnew [directory]`
+
+When you open a file, the explorer closes and the file opens in the current (or new) tab.
+
+---
+
+## Interface overview
+
+The explorer header occupies the first six lines of the screen:
+
+```
+" ====================================
+" CCFXP Directory Listing          ver. 0.12
+"   /path/to/current/directory/
+"   Sorted by    name
+"   Quick Help: -:go up dir  D:delete  R:rename  s:sort-by
+" ====================================
+```
+
+- **Line 3** — Current directory path
+- **Line 4** — Active sort mode (`name`, `size`, or `extension`)
+- **Line 5** — Quick help reminder
+
+Below the header, files and subdirectories are listed one per line. Directories are shown with a trailing `/`. The currently selected entry is highlighted. A `~` indicates an empty row past the end of the listing.
+
+---
+
+## Navigation
+
+| Key | Description |
+|-----|-------------|
+| `j` or `↓` | Move the selection down |
+| `k` or `↑` | Move the selection up |
+| `Enter` | Open the selected file, or enter the selected directory |
+| `-` | Go up to the parent directory |
+
+---
+
+## File operations
+
+| Key | Description |
+|-----|-------------|
+| `%` | Create a new file. Prompts for a filename, then opens it for editing |
+| `d` | Create a new directory. Prompts for a directory name |
+| `D` | Delete the selected file or directory. Shows a confirmation prompt |
+| `R` | Rename or move the selected file. Prompts for the new name |
+
+### Delete confirmation prompt
+
+When you press `D`, CCVim shows a confirmation prompt before deleting:
+
+```
+Confirm deletion of directory<path> [{y(es)},n(o),a(ll),q(uit)]
+```
+
+| Key | Action |
+|-----|--------|
+| `y` | Delete the selected file or directory |
+| `n` | Cancel — do not delete anything |
+| `a` | Delete **all** contents of the current directory (clears the folder) |
+| `q` | Quit CCVim immediately |
+
+<Warning>
+  The `a` (all) option deletes the entire contents of the current directory without further confirmation. Use with care.
+</Warning>
+
+---
+
+## Sorting and display
+
+| Key | Description |
+|-----|-------------|
+| `s` | Cycle the sort mode: **name** → **size** → **extension** → **name** |
+| `r` | Toggle reverse sort order |
+| `g` then `h` | Toggle visibility of hidden files (files whose names start with `.`) |
+| `c` | Set the shell's current working directory to the explorer's current directory |
+
+### Sort modes
+
+| Mode | Behaviour |
+|------|-----------|
+| `name` | Alphabetical by filename. Directories are listed first |
+| `size` | By file size (ascending by default). Directories sort by their reported size |
+| `extension` | By file extension, then alphabetically within each extension. Extensionless files sort last |
+
+---
+
+## Common tasks
+
+### Open a file
+
+1. Navigate to the file with `j`/`k` or arrow keys.
+2. Press `Enter`.
+
+### Create a new file and open it
+
+1. Navigate to the directory where you want the file.
+2. Press `%`.
+3. Type the filename at the prompt and press `Enter`.
+4. The file opens immediately for editing.
+
+### Create a new directory
+
+1. Press `d`.
+2. Type the directory name at the prompt and press `Enter`.
+
+### Rename or move a file
+
+1. Select the file with `j`/`k`.
+2. Press `R`.
+3. The status line shows the current path. Type the new filename and press `Enter`.
+
+### Delete a file
+
+1. Select the file with `j`/`k`.
+2. Press `D`.
+3. Press `y` to confirm, or `n` to cancel.
+
+### Show hidden files
+
+1. Press `g`, then `h` to toggle hidden file visibility.

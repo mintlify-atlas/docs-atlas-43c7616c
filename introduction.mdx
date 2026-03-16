@@ -1,0 +1,62 @@
+---
+title: "Introduction"
+description: "A Vim-inspired text editor for ComputerCraft computers in Minecraft"
+---
+
+CCVim is a Vim-inspired text editor built for [ComputerCraft](https://computercraft.cc) computers inside Minecraft. It brings modal editing, syntax highlighting, multi-file tabs, and a built-in file explorer to your in-game terminal.
+
+The project exists because the author wanted features that earlier Vim clones for ComputerCraft did not provide. CCVim is written entirely in Lua and runs on any ComputerCraft computer or turtle. The README was written in CCVim itself.
+
+## Features
+
+<CardGroup cols={2}>
+  <Card title="Modal editing" icon="pen-to-square">
+    Insert and append modes with familiar Vim keybindings. Press `TAB` to return to normal mode.
+  </Card>
+  <Card title="Syntax highlighting" icon="highlighter">
+    Basic syntax highlighting with an extensible syntax file system. Set the filetype with `:set filetype=[FILETYPE]`.
+  </Card>
+  <Card title="Multi-file tabs" icon="table-columns">
+    Open multiple files at once. Each file gets its own tab so you can switch between them without closing.
+  </Card>
+  <Card title="File explorer" icon="folder-open">
+    Navigate your ComputerCraft filesystem with the built-in file explorer.
+  </Card>
+  <Card title="In-file search" icon="magnifying-glass">
+    Search forward and backward through any open file.
+  </Card>
+  <Card title="Copy / cut / paste" icon="clipboard">
+    Yank, delete, and paste lines using standard Vim commands.
+  </Card>
+  <Card title="Jump commands" icon="arrow-right">
+    Jump to lines, matching brackets (`{}`, `[]`, `()`), and characters with `f`, `F`, `t`, `T`. Repeat jumps with `;` and `,`.
+  </Card>
+  <Card title="Touchscreen support" icon="hand-pointer">
+    Tap the bottom line to exit insert or append mode on mobile or touchscreen devices.
+  </Card>
+  <Card title="Autoindent" icon="indent">
+    Automatic indentation keeps your code formatted as you type.
+  </Card>
+  <Card title="Line numbers" icon="list-ol">
+    Toggle line numbers to navigate large files with ease.
+  </Card>
+</CardGroup>
+
+## Who it's for
+
+CCVim is for players who want a capable in-game text editor for writing Lua programs on ComputerCraft computers. If you are familiar with Vim, many commands will feel familiar. If you are new to Vim, CCVim is a self-contained environment where you can learn modal editing without leaving the game.
+
+<Note>
+  CCVim replaces the Escape key with **TAB** to exit insert and append mode. This is the most important difference from standard Vim, because ComputerCraft terminals do not reliably receive the Escape key.
+</Note>
+
+## Next steps
+
+<CardGroup cols={2}>
+  <Card title="Installation" icon="download" href="/installation">
+    Install CCVim on your ComputerCraft computer automatically or manually.
+  </Card>
+  <Card title="Quickstart" icon="rocket" href="/quickstart">
+    Open your first file and learn the commands you need to start editing.
+  </Card>
+</CardGroup>

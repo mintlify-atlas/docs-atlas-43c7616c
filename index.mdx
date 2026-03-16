@@ -1,97 +1,56 @@
 ---
-title: "Introduction"
-description: "Welcome to the new home for your documentation"
+title: "CCVim"
+description: "A Vim-inspired text editor for ComputerCraft computers in Minecraft"
 ---
 
-## Setting up
+CCVim is a feature-rich Vim clone built for [ComputerCraft](https://computercraft.cc) computers. It brings the power of modal editing, syntax highlighting, multi-file tabs, and a built-in file explorer to your in-game terminal.
 
-Get your documentation site up and running in minutes.
-
-<Card
-  title="Start here"
-  icon="rocket"
-  href="/quickstart"
-  horizontal
->
-  Follow our three step quickstart guide.
-</Card>
-
-## Make it yours
-
-Design a docs site that looks great and empowers your users.
-
-<Columns cols={2}>
-  <Card
-    title="Edit locally"
-    icon="pen-to-square"
-    href="/development"
-  >
-    Edit your docs locally and preview them in real time.
+<CardGroup cols={2}>
+  <Card title="Installation" icon="download" href="/installation">
+    Get CCVim running on your ComputerCraft computer in seconds
   </Card>
-  <Card
-    title="Customize your site"
-    icon="palette"
-    href="/essentials/settings"
-  >
-    Customize the design and colors of your site to match your brand.
+  <Card title="Quickstart" icon="rocket" href="/quickstart">
+    Open your first file and learn the essential keybindings
   </Card>
-    <Card
-    title="Set up navigation"
-    icon="map"
-    href="/essentials/navigation"
-  >
-    Organize your docs to help users find what they need and succeed with your product.
+  <Card title="Keybinding Reference" icon="keyboard" href="/reference/keybindings">
+    Complete reference for all normal mode keybindings
   </Card>
-  <Card
-    title="API documentation"
-    icon="terminal"
-    href="/api-reference/introduction"
-  >
-    Auto-generate API documentation from OpenAPI specifications.
+  <Card title="Configuration" icon="gear" href="/configuration/vimrc">
+    Customize CCVim with a `.vimrc` file
   </Card>
-</Columns>
+</CardGroup>
 
-## Create beautiful pages
+## Features
 
-Everything you need to create world-class documentation.
+<CardGroup cols={2}>
+  <Card title="Modal editing" icon="pen-to-square">
+    Insert, append, and normal modes with familiar Vim keybindings. Press `TAB` to return to normal mode.
+  </Card>
+  <Card title="Syntax highlighting" icon="highlighter">
+    Built-in Lua syntax highlighting with an extensible syntax file system for any language.
+  </Card>
+  <Card title="Multi-file tabs" icon="table-columns">
+    Open multiple files simultaneously and switch between them with `gt` and `gT`.
+  </Card>
+  <Card title="File explorer" icon="folder-open">
+    Navigate your filesystem with the built-in CCFXP directory browser.
+  </Card>
+  <Card title="In-file search" icon="magnifying-glass">
+    Search forward and backward through files with `/` and `?`, with wrap-around and search history.
+  </Card>
+  <Card title="Copy/cut/paste" icon="clipboard">
+    Yank lines with `yy`, delete with `dd`, and paste with `p` or `P`.
+  </Card>
+</CardGroup>
 
-<Columns cols={2}>
-  <Card
-    title="Write with MDX"
-    icon="pen-fancy"
-    href="/essentials/markdown"
-  >
-    Use MDX to style your docs pages.
-  </Card>
-  <Card
-    title="Code samples"
-    icon="code"
-    href="/essentials/code"
-  >
-    Add sample code to demonstrate how to use your product.
-  </Card>
-  <Card
-    title="Images"
-    icon="image"
-    href="/essentials/images"
-  >
-    Display images and other media.
-  </Card>
-  <Card
-    title="Reusable snippets"
-    icon="recycle"
-    href="/essentials/reusable-snippets"
-  >
-    Write once and reuse across your docs.
-  </Card>
-</Columns>
+## Quick example
 
-## Need inspiration?
+```
+vim myfile.lua
+```
 
-<Card
-  title="See complete examples"
-  icon="stars"
-  href="https://mintlify.com/customers"
->
-  Browse our showcase of exceptional documentation sites.
-</Card>
+Open CCVim from the ComputerCraft shell. Press `i` to enter insert mode, type your code, then press `TAB` to return to normal mode. Save with `:w` and quit with `:q`.
+
+<Note>
+  CCVim version 0.733 is the current release. It runs on ComputerCraft computers and turtles, and supports external monitor peripherals.
+</Note>

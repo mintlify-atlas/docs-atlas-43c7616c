@@ -1,0 +1,118 @@
+---
+title: "Tabs"
+description: "Opening multiple files, switching between tabs, and closing tabs"
+---
+
+CCVim supports multiple open files through a tab system. Each file occupies one tab. Cursor position is preserved per tab when you switch away and return.
+
+## Opening multiple files
+
+### From the shell
+
+Pass multiple filenames when launching CCVim to open them all at once, each in its own tab:
+
+```bash
+vim file1.lua file2.lua file3.lua
+```
+
+The first file in the list becomes the active tab on startup.
+
+### From within CCVim
+
+| Command | Description |
+|---------|-------------|
+| `:e [filename]` | Open a file in a new tab and switch to it |
+| `:tabnew` | Open a blank new tab |
+| `:tabnew [filename]` | Open a specific file in a new tab |
+| `:tabnew [n]` | Open `n` blank new tabs (where `n` is a number) |
+
+```
+:e secondfile.lua
+```
+
+This opens `secondfile.lua` in a new tab and makes it the active tab.
+
+## Switching tabs
+
+### Normal mode keys
+
+| Key | Behavior |
+|-----|----------|
+| `gt` | Go to the next tab (wraps from last to first) |
+| `gT` | Go to the previous tab (wraps from first to last) |
+| `[count]gt` | Go to tab number `[count]` (1-indexed) |
+
+Tab switching wraps around: pressing `gt` on the last tab takes you back to the first tab.
+
+### Ex commands
+
+| Command | Description |
+|---------|-------------|
+| `:tabn` | Go to the next tab |
+| `:tabnext` | Alias for `:tabn` |
+| `:tabp` | Go to the previous tab |
+| `:tabprevious` | Alias for `:tabp` |
+| `:tabm [n]` | Move to tab number `[n]` (0-indexed) |
+| `:tabmove [n]` | Alias for `:tabm` |
+
+<Note>
+  `:tabm` uses 0-based indexing, while `[count]gt` uses 1-based indexing. `:tabm 0` goes to the first tab; `1gt` also goes to the first tab.
+</Note>
+
+## Closing tabs
+
+| Command | Description |
+|---------|-------------|
+| `:q` | Close the current tab; fails if there are unsaved changes |
+| `:q!` | Force close the current tab, discarding unsaved changes |
+| `:wq` / `:x` | Save the current file and close its tab |
+| `:tabc` | Close the current tab; fails if there are unsaved changes |
+| `:tabc!` | Force close the current tab |
+| `:tabclose` | Alias for `:tabc` |
+| `:tabclose!` | Alias for `:tabc!` |
+| `:tabo` | Close all tabs except the current one; fails if any other tab has unsaved changes |
+| `:tabo!` | Force close all other tabs, discarding unsaved changes |
+| `:tabonly` | Alias for `:tabo` |
+| `:tabonly!` | Alias for `:tabo!` |
+
+When you close the last remaining tab, CCVim exits and returns you to the ComputerCraft shell.
+
+When you close a tab that is not the last one, CCVim switches to the previous tab and shows its filename and line count in the status bar.
+
+## Cursor position memory
+
+When you switch away from a tab using `gt`, `gT`, `:tabn`, `:tabp`, or any other tab command, CCVim saves the cursor position (X, Y, and scroll offsets) for that tab. When you return to it, the cursor is restored to where you left off.
+
+<Tip>
+  Open your main program in tab 1 and a related file in tab 2, then use `gt` and `gT` to switch between them quickly while preserving your position in each.
+</Tip>
+
+## Workflow example
+
+<Steps>
+  <Step title="Open two files">
+    ```bash
+    vim main.lua lib.lua
+    ```
+    CCVim opens with `main.lua` active in tab 1 and `lib.lua` in tab 2.
+  </Step>
+  <Step title="Edit the first file">
+    Make changes to `main.lua`.
+  </Step>
+  <Step title="Switch to the second file">
+    Press `gt` to switch to `lib.lua` in tab 2.
+  </Step>
+  <Step title="Open a third file">
+    From within CCVim, run:
+    ```
+    :e util.lua
+    ```
+    `util.lua` opens in tab 3 and becomes the active tab.
+  </Step>
+  <Step title="Return to the first file">
+    Press `gT` twice to go back to tab 1, or use `1gt`.
+  </Step>
+  <Step title="Save all and close">
+    Run `:wq` in each tab, or use `:tabo` to close the others after saving them first.
+  </Step>
+</Steps>

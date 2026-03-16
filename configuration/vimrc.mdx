@@ -1,0 +1,135 @@
+---
+title: ".vimrc"
+description: "Configure CCVim at startup using the .vimrc file"
+---
+
+The `.vimrc` file lets you set options, enable syntax highlighting, and remap keys automatically every time CCVim starts. Without a `.vimrc`, CCVim uses its built-in defaults.
+
+## File location
+
+CCVim looks for `.vimrc` at `/vim/.vimrc` on the ComputerCraft filesystem. Create that file if it does not already exist.
+
+<Note>
+  Options set with `:set` during a session apply only to that session. Add them to `.vimrc` to make them permanent.
+</Note>
+
+## File format
+
+Each line in `.vimrc` is a single command. Lines beginning with `"` are comments and are ignored by the parser.
+
+```text
+" This is a comment
+syntax on
+set number
+```
+
+Blank lines are also ignored. Unrecognized commands cause an error at startup — CCVim will display the unrecognized command name and pause before continuing.
+
+<Warning>
+  Full Vimscript is not supported. Only the commands documented here are recognized. Using any other command will produce a startup error.
+</Warning>
+
+## Supported commands
+
+### `set`
+
+The `set` command enables editor options.
+
+```text
+set [option]
+```
+
+| Option | Description |
+|--------|-------------|
+| `number` | Display line numbers in a 4-character gutter on the left side of the screen |
+| `mobile` | Enable touchscreen mode — tapping the bottom status bar line exits insert mode |
+| `lowperformance` | Enable low-performance mode — disables multi-line comment detection for slow computers |
+| `autoindent` | When you press Enter, the new line is indented to match the leading whitespace of the previous line |
+| `ignorecase` | Make `/` and `?` searches case-insensitive |
+| `ic` | Short alias for `ignorecase` |
+
+### `syntax`
+
+The `syntax` command enables syntax highlighting.
+
+```text
+syntax on
+```
+
+When enabled, CCVim loads a syntax file from `/vim/syntax/[extension].lua` that matches the opened file's extension. See [Syntax highlighting](/configuration/syntax-highlighting) for details.
+
+### `map`
+
+The `map` command remaps a character key to another character.
+
+```text
+map [from] [to]
+```
+
+`map` requires exactly two arguments — the key to remap and the key to remap it to. Both arguments must be single characters.
+
+```text
+" Remap j to k
+map j k
+```
+
+Remappings apply to character events in both normal mode and insert/append mode. They do not affect named keys such as Enter, Backspace, or the arrow keys.
+
+<Note>
+  Key remappings can only be defined in `.vimrc`. There is no live `:map` command during a session.
+</Note>
+
+## Setting up your .vimrc
+
+<Steps>
+  <Step title="Open or create the file">
+    From the ComputerCraft shell, run CCVim on the config file:
+
+    ```text
+    vim /vim/.vimrc
+    ```
+
+    If the file does not exist, CCVim opens an empty buffer. Save with `:w` to create it.
+  </Step>
+  <Step title="Add your options">
+    Enter insert mode with `i` and type your configuration. Each command goes on its own line.
+
+    ```text
+    syntax on
+    set number
+    set autoindent
+    ```
+  </Step>
+  <Step title="Save and exit">
+    Press **TAB** to return to normal mode, then run `:wq` to save and quit.
+  </Step>
+  <Step title="Restart CCVim">
+    The next time you launch CCVim, it reads `.vimrc` automatically and applies your settings before opening the file.
+  </Step>
+</Steps>
+
+## Example .vimrc
+
+This is a typical configuration covering the most commonly used options:
+
+```text
+" CCVim configuration
+
+" Display
+syntax on
+set number
+
+" Editing
+set autoindent
+
+" Search
+set ignorecase
+
+" Key remappings
+map j k
+map k j
+```
+
+<Tip>
+  The example `.vimrc` that ships with CCVim only contains `syntax on` and `set number`. Start from there and add options as you need them.
+</Tip>

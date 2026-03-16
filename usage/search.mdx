@@ -1,0 +1,133 @@
+---
+title: "Search"
+description: "Searching within the current file — forward, backward, repeat, and options"
+---
+
+CCVim supports forward and backward text search within the current buffer. Search is case-sensitive by default.
+
+## Starting a search
+
+| Key | Direction |
+|-----|-----------|
+| `/` | Search forward through the file |
+| `?` | Search backward through the file |
+
+<Steps>
+  <Step title="Enter a search">
+    Press `/` in normal mode. The prompt `/` appears at the bottom of the screen.
+  </Step>
+  <Step title="Type the pattern">
+    Type the text you want to find. The input is shown in the status bar as you type.
+  </Step>
+  <Step title="Confirm">
+    Press **Enter** to jump to the first match after the cursor. The cursor moves to the start of the matching text.
+  </Step>
+</Steps>
+
+For backward search, press `?` and follow the same steps. The search moves toward line 1.
+
+## Repeating a search
+
+After running a search, you can repeat it without re-entering the pattern:
+
+| Key | Behavior |
+|-----|----------|
+| `n` | Repeat the search in the same direction |
+| `N` | Repeat the search in the opposite direction |
+
+## Wrap-around
+
+Searches wrap around the file. If a forward search reaches the last line without finding another match, it continues from line 1. The status bar displays:
+
+```
+search hit BOTTOM, continuing at TOP
+```
+
+For backward searches that wrap:
+
+```
+search hit TOP, continuing at BOTTOM
+```
+
+If no match exists anywhere in the file, CCVim shows:
+
+```
+Pattern not found: [your pattern]
+```
+
+## Searching for the word under the cursor
+
+| Key | Behavior |
+|-----|----------|
+| `*` | Search forward for the word under the cursor |
+| `#` | Search backward for the word under the cursor |
+
+These commands extract the word at the current cursor position and run the equivalent of a `/word` or `?word` search. They are useful for quickly finding all uses of a variable or function name.
+
+## Search history
+
+CCVim keeps a history of all searches entered during the current session. While the search prompt is open, use the arrow keys to navigate the history:
+
+| Key | Behavior |
+|-----|----------|
+| `Up arrow` | Recall the previous search |
+| `Down arrow` | Recall the next (more recent) search |
+
+The recalled text fills the search prompt and can be edited before pressing **Enter**.
+
+## Case sensitivity
+
+### Global option
+
+By default, searches are case-sensitive. To make all searches case-insensitive:
+
+```
+:set ignorecase
+```
+
+Or the short form:
+
+```
+:set ic
+```
+
+To restore case-sensitive searching:
+
+```
+:set noignorecase
+```
+
+Add `set ignorecase` to `/vim/.vimrc` to make this permanent.
+
+### Per-search override
+
+You can override the global case setting for an individual search by appending a suffix to the pattern:
+
+| Suffix | Effect |
+|--------|--------|
+| `\c` | Force case-insensitive for this search |
+| `\C` | Force case-sensitive for this search |
+
+**Examples:**
+
+```
+/hello\c
+```
+
+Finds `hello`, `Hello`, `HELLO`, regardless of the `ignorecase` setting.
+
+```
+/hello\C
+```
+
+Finds only `hello` exactly, regardless of the `ignorecase` setting.
+
+The `\c` or `\C` suffix is stripped from the pattern before the match is run — it does not become part of the search string.
+
+<Note>
+  The suffix must be at the very end of the pattern. `\cpattern` does not work; the correct form is `pattern\c`.
+</Note>
+
+## Search and cursor position
+
+When a match is found, the cursor moves to the first character of the matched text. The match position is remembered internally so that pressing `n` or `N` continues from where the last match ended rather than restarting from the same position.

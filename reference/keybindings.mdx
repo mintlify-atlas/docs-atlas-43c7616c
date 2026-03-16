@@ -1,0 +1,201 @@
+---
+title: "Keybindings"
+description: "Complete reference for all normal mode keybindings in CCVim."
+---
+
+All keys listed here apply in **normal mode**. CCVim uses `TAB` to exit insert or append mode, not `Escape`.
+
+<Note>
+  CCVim does not have a hardware `Ctrl` key binding. To emulate Ctrl key combinations, use the [`:ctrl` ex command](/reference/ex-commands#other-commands).
+</Note>
+
+## Movement
+
+### Basic cursor movement
+
+| Key | Description |
+|-----|-------------|
+| `h` | Move cursor left |
+| `j` | Move cursor down |
+| `k` | Move cursor up |
+| `l` | Move cursor right |
+| Arrow keys | Move cursor in the corresponding direction |
+
+### Word movement
+
+| Key | Description |
+|-----|-------------|
+| `w` | Jump to the start of the next word |
+| `b` | Jump to the start of the previous word |
+| `e` | Jump to the end of the next word |
+| `W` | Jump to the start of the next word (punctuation-aware) |
+| `B` | Jump to the start of the previous word (punctuation-aware) |
+| `E` | Jump to the end of the next word (punctuation-aware) |
+
+### Line movement
+
+| Key | Description |
+|-----|-------------|
+| `0` | Jump to the beginning of the line |
+| `$` | Jump to the end of the line |
+| `^` | Jump to the first non-space character of the line |
+
+### File movement
+
+| Key | Description |
+|-----|-------------|
+| `gg` | Go to line 1 |
+| `G` | Go to the last line |
+| `[N]G` | Go to line N (e.g. `10G` goes to line 10) |
+| `[N]gg` | Go to line N (e.g. `10gg` goes to line 10) |
+| `H` | Move cursor to the top of the visible screen |
+| `M` | Move cursor to the middle of the visible screen |
+| `L` | Move cursor to the bottom of the visible screen |
+
+### Character search (within line)
+
+| Key | Description |
+|-----|-------------|
+| `f[c]` | Jump forward to the next occurrence of character `c` on the current line |
+| `F[c]` | Jump backward to the previous occurrence of character `c` on the current line |
+| `t[c]` | Jump forward to just before the next occurrence of character `c` |
+| `T[c]` | Jump backward to just after the previous occurrence of character `c` |
+| `;` | Repeat the last `f`/`F`/`t`/`T` motion in the same direction |
+| `,` | Repeat the last `f`/`F`/`t`/`T` motion in the reverse direction |
+
+### Bracket matching
+
+| Key | Description |
+|-----|-------------|
+| `%` | Jump to the matching bracket. Works with `{}`, `[]`, and `()` |
+
+---
+
+## Editing
+
+### Entering insert mode
+
+| Key | Description |
+|-----|-------------|
+| `i` | Enter insert mode before the cursor |
+| `I` | Enter insert mode at the beginning of the line |
+| `a` | Enter append mode after the cursor |
+| `A` | Enter append mode at the end of the line |
+| `o` | Open a new line below the current line and enter insert mode |
+| `O` | Open a new line above the current line and enter insert mode |
+
+<Note>
+  Press `TAB` to exit insert or append mode and return to normal mode.
+</Note>
+
+### Deleting
+
+| Key | Description |
+|-----|-------------|
+| `x` | Delete the character under the cursor (copied to buffer) |
+| `dd` | Delete (cut) the current line |
+| `D` | Delete from the cursor to the end of the line |
+| `dw` | Delete the word under or after the cursor |
+| `diw` | Delete the inner word (without surrounding whitespace) |
+| `daw` | Delete the word and its surrounding whitespace |
+| `d$` | Delete from the cursor to the end of the line |
+| `[N]dd` | Delete N lines starting from the current line |
+
+### Replacing and substituting
+
+| Key | Description |
+|-----|-------------|
+| `r[c]` | Replace the character under the cursor with `c` |
+| `s` | Delete character under cursor and enter insert mode |
+| `S` | Clear the current line and enter insert mode |
+| `cc` | Clear the current line and enter insert mode |
+| `cw` or `ce` | Delete the current word and enter insert mode |
+| `ciw` | Delete the inner word and enter insert mode |
+| `c$` | Delete from the cursor to end of line and enter insert mode |
+| `C` | Delete from the cursor to end of line and enter insert mode |
+
+### Copying and pasting
+
+| Key | Description |
+|-----|-------------|
+| `yy` | Yank (copy) the current line |
+| `yw` | Yank the word under or after the cursor |
+| `yiw` | Yank the inner word |
+| `yaw` | Yank the word and surrounding whitespace |
+| `y$` | Yank from the cursor to the end of the line |
+| `[N]yy` | Yank N lines |
+| `p` | Paste after the cursor (line yanks paste below current line) |
+| `P` | Paste before the cursor (line yanks paste above current line) |
+
+### Joining lines
+
+| Key | Description |
+|-----|-------------|
+| `J` | Join the current line with the next line (adds a space between them) |
+| `gJ` | Join the current line with the next line (no space added) |
+
+### Saving and quitting
+
+| Key | Description |
+|-----|-------------|
+| `ZZ` | Save the current file and quit |
+| `ZQ` | Quit without saving |
+
+---
+
+## Search
+
+| Key | Description |
+|-----|-------------|
+| `/` | Start a forward search. Type your query and press `Enter` |
+| `?` | Start a backward search. Type your query and press `Enter` |
+| `n` | Jump to the next match in the current search direction |
+| `N` | Jump to the previous match (reverses search direction) |
+| `*` | Search forward for the word under the cursor |
+| `#` | Search backward for the word under the cursor |
+
+<Tip>
+  Searches wrap around the file. When the search hits the bottom, it continues from the top (and vice versa).
+</Tip>
+
+<Tip>
+  Append `\c` to a search query to force case-insensitive matching, or `\C` to force case-sensitive matching, regardless of the `ignorecase` setting.
+</Tip>
+
+---
+
+## Tabs
+
+| Key | Description |
+|-----|-------------|
+| `gt` | Go to the next tab (wraps around to tab 1) |
+| `gT` | Go to the previous tab (wraps around to the last tab) |
+| `[N]gt` | Go to tab number N |
+
+---
+
+## g-prefix commands
+
+| Key | Description |
+|-----|-------------|
+| `gg` | Go to line 1 |
+| `gt` | Go to the next tab |
+| `gT` | Go to the previous tab |
+| `gJ` | Join the current line with the next line (no separator space) |
+| `ge` | Jump to the end of the previous word |
+| `gE` | Jump to the end of the previous word (punctuation-aware) |
+| `g_` | Jump to the last non-space character of the current line |
+
+---
+
+## Count prefix
+
+Many movement and editing commands accept a numeric count prefix. Type the count before the command key.
+
+| Example | Effect |
+|---------|--------|
+| `5j` | Move 5 lines down |
+| `3w` | Jump forward 3 word starts |
+| `10G` | Go to line 10 |
+| `3dd` | Delete 3 lines |
+| `2yy` | Yank 2 lines |

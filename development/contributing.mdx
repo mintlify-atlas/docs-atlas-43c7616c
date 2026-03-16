@@ -1,0 +1,93 @@
+---
+title: "Contributing"
+description: "How to contribute to CCVim development"
+---
+
+CCVim is open-source software hosted on GitHub. Contributions of all kinds are welcome — bug reports, new syntax files, and patches to the core editor.
+
+<CardGroup cols={2}>
+  <Card title="Source code" icon="code" href="https://github.com/Minater247/CCVim">
+    Browse the repository, open issues, and submit pull requests.
+  </Card>
+  <Card title="Bug reports" icon="bug" href="https://github.com/Minater247/CCVim/issues">
+    Report unexpected behavior or crashes via GitHub Issues.
+  </Card>
+</CardGroup>
+
+## License
+
+CCVim is released under the **GNU General Public License v3.0 (GPL-3.0)**. Any contributions you submit are understood to be licensed under the same terms. You can read the full license text in the `LICENSE` file at the root of the repository.
+
+In practical terms, GPL-3.0 means:
+
+- You are free to use, copy, modify, and distribute CCVim.
+- Modified versions must also be distributed under GPL-3.0.
+- Source code must be made available when distributing binaries.
+
+## Reporting bugs
+
+Open an issue on the [GitHub issue tracker](https://github.com/Minater247/CCVim/issues). Please include:
+
+- A description of what you expected to happen.
+- A description of what actually happened.
+- The ComputerCraft and Minecraft versions you are running.
+- Steps to reproduce the problem, including the content of any file that triggers it.
+
+## Submitting code
+
+<Steps>
+  <Step title="Fork the repository">
+    Click **Fork** on the [CCVim GitHub page](https://github.com/Minater247/CCVim) to create a copy under your own account.
+  </Step>
+
+  <Step title="Clone your fork">
+    ```bash
+    git clone https://github.com/YOUR_USERNAME/CCVim.git
+    cd CCVim
+    ```
+  </Step>
+
+  <Step title="Make your changes">
+    Edit the source files. See the [environment constraints](#environment-constraints) section before making changes to ensure your code will run inside ComputerCraft.
+  </Step>
+
+  <Step title="Open a pull request">
+    Push your branch to your fork and open a pull request against the `main` branch of `Minater247/CCVim`. Describe what the change does and why.
+  </Step>
+</Steps>
+
+## Environment constraints
+
+CCVim runs inside ComputerCraft, a Minecraft mod that provides a sandboxed Lua 5.2 environment. This imposes hard constraints on what you can use:
+
+- **Pure ComputerCraft Lua only.** There is no package manager and no way to load external libraries at runtime. Every dependency must already be present in the ComputerCraft environment or bundled with the editor.
+- **No standard OS libraries.** Functions like `io.open`, `os.execute`, and `require` behave differently or are unavailable. Use the ComputerCraft APIs (`fs`, `term`, `io` where available) instead.
+- **Limited CPU and memory.** ComputerCraft computers are intentionally resource-constrained. Avoid algorithms with high constant factors; this is why a `lowperformance` mode exists for multi-line comment detection.
+- **No floating-point guarantee.** Stick to integer arithmetic where possible.
+
+<Warning>
+Do not add any `require()` calls for paths outside the `/vim/` directory tree, and do not depend on filesystem paths that users may not have set up. The installer places files under `/vim/`; contributions should follow the same convention.
+</Warning>
+
+## Roadmap
+
+The following items are tracked in `TODO.txt` in the repository root. If you want to contribute a larger feature, these are the areas actively being considered:
+
+| Priority | Item |
+|----------|------|
+| Soon | Word search within file |
+| Soon | Cursor text color reflects syntax color (optional) |
+| Later | Visual mode |
+| Later | Undo tree with better change detection |
+| Later | Undo/redo history |
+| Later | External syntax parser |
+| Later | Multiple multi-line comments on a single line |
+| Later | Check whether a file is already open in a tab |
+| Later | Move command handling to its own function |
+| Later | Additional file explorer commands |
+
+If you want to work on one of these, open an issue first to discuss the approach before writing code. This avoids duplicate effort and keeps the implementation consistent with the rest of the editor.
+
+## Adding a syntax file
+
+One of the easiest ways to contribute is to write a syntax file for a language that CCVim does not yet support. See the [custom syntax highlighting](/development/custom-syntax) page for the full format. Once your file is working, submit it as a pull request adding `syntax/[extension].lua` to the repository.

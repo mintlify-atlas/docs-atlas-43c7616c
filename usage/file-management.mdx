@@ -1,0 +1,123 @@
+---
+title: "File management"
+description: "Opening, saving, creating, and closing files in CCVim"
+---
+
+## Opening files from the shell
+
+Pass one or more filenames as arguments to open them when launching CCVim:
+
+```bash
+vim myfile.lua
+```
+
+Opening multiple files at once opens each in its own tab:
+
+```bash
+vim file1.lua file2.lua file3.lua
+```
+
+If you pass a directory path instead of a file, CCVim opens the built-in file explorer for that directory:
+
+```bash
+vim /myproject/
+```
+
+### New files
+
+If the file you specify does not exist, CCVim opens an empty buffer. The status bar shows `[New File]`. The file is not created on disk until you save with `:w`.
+
+```bash
+vim brand-new-file.lua
+```
+
+### No file
+
+Running `vim` with no arguments opens the welcome screen. From there you can open a file with `:e [filename]`.
+
+```bash
+vim
+```
+
+## Opening files from within CCVim
+
+| Command | Description |
+|---------|-------------|
+| `:e [filename]` | Open a file in a new tab |
+| `:ex [filename]` | Alias for `:e` |
+
+If the filename does not exist, CCVim opens an empty buffer for it. The file is written to disk on the first `:w`.
+
+If you pass a directory path to `:e`, the file explorer opens for that directory:
+
+```
+:e /myproject/
+```
+
+### Reading a file into the current buffer
+
+| Command | Description |
+|---------|-------------|
+| `:r [filename]` | Append the contents of `[filename]` after the last line of the current buffer |
+| `:read [filename]` | Alias for `:r` |
+
+This does not open a new tab. The contents of the target file are inserted directly into the current buffer.
+
+## Saving files
+
+| Command | Description |
+|---------|-------------|
+| `:w` | Save the current buffer to its current filename |
+| `:w [filename]` | Save the current buffer to a different filename |
+| `:sav [filename]` | Save as; fails if the target file already exists |
+| `:sav! [filename]` | Save as, overwriting the target if it exists |
+
+<Warning>
+  Running `:w` when the buffer has no filename (e.g. after opening CCVim with no arguments) returns the error `No file name`. Use `:w [filename]` to give it one.
+</Warning>
+
+After a successful save, the status bar shows the filename and number of lines written:
+
+```
+"myfile.lua"  23L written
+```
+
+## Saving and quitting
+
+| Command | Description |
+|---------|-------------|
+| `:wq` | Save the current file and close it |
+| `:x` | Alias for `:wq` |
+| `ZZ` | Save and quit (normal mode key sequence) |
+
+When only one file is open, `:wq` exits CCVim entirely. When multiple tabs are open, it closes only the current tab and switches to the previous one.
+
+## Closing without saving
+
+| Command | Description |
+|---------|-------------|
+| `:q` | Close the current file; fails if there are unsaved changes |
+| `:q!` | Force close, discarding unsaved changes |
+| `:tabc` | Close the current tab; fails if there are unsaved changes |
+| `:tabc!` | Force close the current tab |
+| `ZQ` | Force quit without saving (normal mode key sequence) |
+
+<Note>
+  If you attempt `:q` with unsaved changes, CCVim shows the error:
+  `No write since last change (add ! to override)`
+  Add `!` to force quit: `:q!`
+</Note>
+
+## Syntax detection on open
+
+When CCVim opens a file, it reads the file extension to determine the filetype. If a matching syntax file exists at `/vim/syntax/[extension].lua`, syntax highlighting is loaded automatically.
+
+For example, opening `myprogram.lua` loads `/vim/syntax/lua.lua` if it exists.
+
+You can override the detected filetype manually:
+
+```
+:set filetype=lua
+```
+
+See [Syntax highlighting](/configuration/syntax-highlighting) for more details.

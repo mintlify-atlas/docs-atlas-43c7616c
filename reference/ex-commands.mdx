@@ -1,0 +1,142 @@
+---
+title: "Ex Commands"
+description: "Complete reference for all `:` commands in CCVim."
+---
+
+Ex commands are entered by pressing `:` in normal mode. Type the command and press `Enter` to execute.
+
+---
+
+## File commands
+
+| Command | Description |
+|---------|-------------|
+| `:w` | Save the current file |
+| `:w [file]` | Write the current buffer to `[file]` |
+| `:w!` | Force-write the current file (overrides read-only check where possible) |
+| `:sav [file]` | Save as `[file]` (fails if file already exists) |
+| `:saveas [file]` | Alias for `:sav` |
+| `:sav! [file]` | Save as `[file]`, overwriting if it exists |
+| `:saveas! [file]` | Alias for `:sav!` |
+| `:q` | Quit the current tab. Fails if there are unsaved changes |
+| `:q!` | Force quit, discarding unsaved changes |
+| `:wq` | Save and quit the current tab |
+| `:x` | Save (if the buffer is modified) and quit the current tab |
+| `:e [file]` | Open `[file]` in a new tab. Opens the file explorer if `[file]` is a directory |
+| `:ex [file]` | Alias for `:e` |
+| `:r [file]` | Read `[file]` and append its contents below the current buffer |
+| `:read [file]` | Alias for `:r` |
+
+<Note>
+  `:wq` always writes before quitting. `:x` only writes if the buffer has unsaved changes.
+</Note>
+
+---
+
+## Tab commands
+
+| Command | Description |
+|---------|-------------|
+| `:tabnew` | Open a new empty tab |
+| `:tabnew [file]` | Open `[file]` in a new tab |
+| `:tabn` | Go to the next tab |
+| `:tabnext` | Alias for `:tabn` |
+| `:tabp` | Go to the previous tab |
+| `:tabprevious` | Alias for `:tabp` |
+| `:tabm [N]` | Switch to tab at position N (0-indexed) |
+| `:tabmove [N]` | Alias for `:tabm` |
+| `:tabo` | Close all tabs except the current one. Fails if any other tab has unsaved changes |
+| `:tabonly` | Alias for `:tabo` |
+| `:tabo!` | Force-close all other tabs, discarding unsaved changes |
+| `:tabonly!` | Alias for `:tabo!` |
+| `:tabc` | Close the current tab. Fails if there are unsaved changes |
+| `:tabclose` | Alias for `:tabc` |
+| `:tabc!` | Force-close the current tab, discarding unsaved changes |
+| `:tabclose!` | Alias for `:tabc!` |
+
+---
+
+## Settings
+
+| Command | Description |
+|---------|-------------|
+| `:set number` | Enable line numbers |
+| `:set nonumber` | Disable line numbers |
+| `:set autoindent` | Enable automatic indentation on new lines |
+| `:set noautoindent` | Disable automatic indentation |
+| `:set ignorecase` | Enable case-insensitive search |
+| `:set ic` | Alias for `:set ignorecase` |
+| `:set noignorecase` | Disable case-insensitive search |
+| `:set noic` | Alias for `:set noignorecase` |
+| `:set mobile` | Enable mobile mode (tap the bottom line to exit insert/append mode) |
+| `:set nomobile` | Disable mobile mode |
+| `:set lowspec` | Enable low-performance mode (disables multi-line comment highlighting) |
+| `:set nolowspec` | Disable low-performance mode |
+| `:set filetype=[type]` | Set the syntax filetype for the current buffer (e.g. `:set filetype=lua`) |
+| `:set scale=[N]` | Set the text scale of an attached monitor peripheral |
+
+<Tip>
+  Use `:set filetype=[type]` to manually apply syntax highlighting to a buffer that was not auto-detected. Requires a corresponding syntax file at `/vim/syntax/[type].lua`.
+</Tip>
+
+<Note>
+  Settings can also be applied persistently via `/vim/.vimrc`. The `.vimrc` option for low-performance mode is `set lowperformance` (not `lowspec`).
+</Note>
+
+---
+
+## Syntax
+
+| Command | Description |
+|---------|-------------|
+| `:syntax on` | Enable syntax highlighting |
+| `:syntax off` | Disable syntax highlighting |
+
+---
+
+## Display
+
+| Command | Description |
+|---------|-------------|
+| `:resetscale` | Reset the terminal size (useful after changing monitor scale) |
+
+---
+
+## Other commands
+
+### Ctrl emulation
+
+ComputerCraft terminals do not support hardware `Ctrl` key events. CCVim provides two ways to emulate them:
+
+| Command | Description |
+|---------|-------------|
+| `:ctrl` | Activate the emulated Ctrl key and wait for the next keypress |
+| `:ctrl [key]` | Immediately emulate `Ctrl+[key]` without waiting |
+| `:control` | Alias for `:ctrl` |
+
+The following `Ctrl` combinations are supported:
+
+| Emulated key | Effect |
+|--------------|--------|
+| `Ctrl+e` | Scroll the view down one line (cursor stays) |
+| `Ctrl+y` | Scroll the view up one line (cursor stays) |
+| `Ctrl+b` | Scroll up one full page |
+| `Ctrl+f` | Scroll down one full page |
+| `Ctrl+d` | Scroll down half a page |
+| `Ctrl+u` | Scroll up half a page |
+
+**Example:**
+```
+:ctrl f
+```
+Scrolls down one full page.
+
+### Key remapping
+
+| Command | Description |
+|---------|-------------|
+| `:map [from] [to]` | Remap a key. Only available inside `/vim/.vimrc`; not supported at runtime |
+
+<Warning>
+  `:map` is parsed from `.vimrc` at startup only. Running `:map` interactively has no effect.
+</Warning>

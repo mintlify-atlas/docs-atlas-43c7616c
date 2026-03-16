@@ -1,0 +1,100 @@
+---
+title: "Installation"
+description: "Install CCVim on your ComputerCraft computer"
+---
+
+## Prerequisites
+
+You need a ComputerCraft computer (or turtle) inside Minecraft with the ComputerCraft mod installed. CCVim does not run outside of ComputerCraft.
+
+HTTP access must be enabled in your ComputerCraft configuration to use the automatic installer. It is enabled by default in most installations.
+
+## Automatic installation
+
+The automatic installer downloads all required files from GitHub and places them in the correct locations.
+
+<Steps>
+  <Step title="Open your ComputerCraft terminal">
+    Sit at or right-click a ComputerCraft computer to open its terminal.
+  </Step>
+  <Step title="Run the pastebin installer">
+    Type the following command and press Enter:
+
+    ```bash
+    pastebin run eX0BrfjA
+    ```
+
+    The installer downloads `vim.lua`, the library files, `.version`, and a default `.vimrc` into the `/vim/` directory.
+  </Step>
+  <Step title="Add CCVim to your path (optional)">
+    The installer will ask if you want to add CCVim to your universal path. If you answer **y**, it appends a line to your `/startup` file so that `vim` is available from any directory after a reboot.
+
+    If you added CCVim to your path, reboot your computer to apply the change:
+
+    ```bash
+    reboot
+    ```
+  </Step>
+  <Step title="Configure for mobile (optional)">
+    The installer will ask whether you can press TAB on your device. If you answer **n**, it adds `set mobile` to your `.vimrc` so that tapping the bottom line exits insert or append mode instead.
+  </Step>
+</Steps>
+
+<Tip>
+  You can re-run the installer at any time to update CCVim, add syntax files, or modify your path configuration. Run `vim_installer` from the `/vim/` directory after the initial install.
+</Tip>
+
+## Manual installation
+
+If HTTP is not available or you prefer to install files yourself, copy the files directly.
+
+<Steps>
+  <Step title="Create the /vim/ directory">
+    ```bash
+    mkdir /vim
+    ```
+  </Step>
+  <Step title="Copy the required files">
+    Copy the following files from the CCVim repository into `/vim/`:
+
+    - `vim.lua`
+    - `.version`
+
+    Then copy the entire `libs/` folder and its contents into `/vim/libs/`.
+  </Step>
+  <Step title="Add syntax files (optional)">
+    Copy syntax files into `/vim/syntax/`. Each file is named after its language extension.
+
+    For example, a Lua syntax file goes at `/vim/syntax/lua.lua`. A file with the `.swf` extension would use `/vim/syntax/swf.lua`.
+  </Step>
+  <Step title="Add a .vimrc (optional)">
+    Place a `.vimrc` file in `/vim/` to configure CCVim at startup. A default `.vimrc` is available in the root of the CCVim repository.
+  </Step>
+</Steps>
+
+## Installed file locations
+
+After installation, your `/vim/` directory contains:
+
+| Path | Description |
+|------|-------------|
+| `/vim/vim.lua` | Main editor executable |
+| `/vim/.version` | Version file (used by the updater) |
+| `/vim/.vimrc` | Configuration file (optional) |
+| `/vim/lib/` | Library files required by the editor |
+| `/vim/syntax/` | Syntax highlighting files (optional) |
+| `/vim/vim_installer.lua` | Installer for updates and syntax downloads |
+
+## Verifying the installation
+
+Run the following command from the `/vim/` directory (or from anywhere if you added CCVim to your path):
+
+```bash
+vim --version
+```
+
+This prints the current version number and confirms that CCVim is installed correctly. The current release is version **0.733** (2022-05-19).
+
+<Warning>
+  If you see `No such program`, CCVim is not on your shell path. Either run it as `/vim/vim` or add `/vim/` to your path using the installer's path option.
+</Warning>

@@ -1,0 +1,197 @@
+---
+title: "Custom syntax highlighting"
+description: "Create syntax files to add highlighting for any language in CCVim"
+---
+
+CCVim's syntax highlighting is driven by plain Lua files that live on the ComputerCraft filesystem. Each file describes one language — its keywords, comment markers, and string delimiters — and CCVim reads it at render time to colorize the buffer. You can add highlighting for any language by creating a single file in the right location.
+
+## How syntax files are loaded
+
+When you open a file, CCVim extracts the extension from the filename and attempts to load:
+
+```
+/vim/syntax/[extension].lua
+```
+
+For example, opening `script.lua` loads `/vim/syntax/lua.lua`. You can also switch highlighting for the current buffer at any time with:
+
+```
+:set filetype=[extension]
+```
+
+This is useful for testing a new syntax file without closing the buffer, or for files whose extension doesn't match their language.
+
+<Note>
+Syntax highlighting is disabled automatically when `lowperformance` mode is active. Multi-line comment detection is also skipped in that mode.
+</Note>
+
+## File structure
+
+Every syntax file must return a table with a single key, `syntax`, whose value is a function. That function takes no arguments and returns a 7-element table:
+
+```lua
+local function syntax()
+    -- ... define your values ...
+    return {todos, keywords, stringchar, commentstring, removedpunctuation, type, multilinecommentstrings}
+end
+
+return { syntax = syntax }
+```
+
+CCVim calls `syntax()` on every draw pass, so keep the function lightweight.
+
+## Return value reference
+
+| Position | Name | Lua type | Description | Color applied |
+|----------|------|----------|-------------|---------------|
+| 1 | `todos` | `table` of strings | Words highlighted as annotation markers, e.g. `"TODO"`, `"FIXME"` | Yellow text, blue background |
+| 2 | `keywords` | `table` of 2 tables | Two groups of reserved words (see below) | Group 1: black text, light-blue background. Group 2: black text, purple background |
+| 3 | `stringchar` | `string` (1 char) | The character that delimits string literals | Red text |
+| 4 | `commentstring` | `string` | Prefix that starts a single-line comment | Green text |
+| 5 | `removedpunctuation` | `table` of strings | Punctuation characters to strip when splitting a line into tokens for keyword matching | — |
+| 6 | `type` | `string` | Always `"code"` for code files | — |
+| 7 | `multilinecommentstrings` | `table` of 2 strings | `{startMarker, endMarker}` for multi-line comments | Green text |
+
+### The `keywords` table
+
+`keywords` holds exactly two sub-tables:
+
+- `keywords[1]` — control-flow and boolean keywords. Rendered with **yellow text on a blue background**, the same as `todos`.
+- `keywords[2]` — two further sub-tables:
+  - `keywords[2][1]` — a first tier of secondary keywords. Rendered with **black text on a light-blue background**.
+  - `keywords[2][2]` — a second tier of secondary keywords. Rendered with **black text on a purple background**.
+
+For the built-in Lua syntax file the split is:
+
+```lua
+local keywords = {
+    -- keywords[1]: control flow + booleans
+    {"function", "if", "while", "for", "do", "return", "else", "end",
+     "then", "repeat", "until", "elseif", "true", "false"},
+    -- keywords[2][1]: type-related
+    {"local", "nil"}
+    -- keywords[2][2] is absent here, treated as empty
+}
+```
+
+<Note>
+Keyword matching is whole-word only: CCVim splits each line on spaces and checks whether a resulting token exactly matches an entry. Tokens are not stripped of punctuation unless you list that punctuation in `removedpunctuation`.
+</Note>
+
+## Step-by-step: creating a syntax file
+
+<Steps>
+  <Step title="Identify the language's features">
+    Before writing any code, note down:
+
+    - **Keywords** — which ones are control flow? Which are type or modifier words?
+    - **String delimiter** — the character that opens and closes a string literal. CCVim supports exactly one character (e.g. `"`). If the language uses both `"` and `'`, pick the most common one.
+    - **Single-line comment prefix** — the character sequence that starts a line comment (e.g. `#`, `//`, `--`).
+    - **Multi-line comment markers** — the opening and closing sequences (e.g. `/*` and `*/`). If the language has no multi-line comments, you can set both to a string that will never appear in real code, or to empty strings.
+    - **TODO-style markers** — any annotation words your team uses in comments.
+  </Step>
+
+  <Step title="Create the file at the correct path">
+    Syntax files live at `/vim/syntax/[extension].lua` on the ComputerCraft filesystem. For a language with extension `py`:
+
+    ```
+    /vim/syntax/py.lua
+    ```
+
+    Create the file using CCVim itself (`:e /vim/syntax/py.lua`) or by placing the file before launching the game.
+  </Step>
+
+  <Step title="Implement the syntax() function">
+    Fill in the seven return values. See the annotated Python example below for guidance.
+  </Step>
+
+  <Step title="Test with :set filetype">
+    Open any file of the target language, then run:
+
+    ```
+    :set filetype=py
+    ```
+
+    The buffer redraws immediately with the new highlighting. Alternatively, close and reopen a `.py` file — CCVim will load the syntax file automatically from the extension.
+
+    <Tip>
+    If highlighting does not appear, check that the file is saved at exactly `/vim/syntax/[extension].lua` and that the `syntax` function returns all seven values in the correct order.
+    </Tip>
+  </Step>
+</Steps>
+
+## Annotated example: Python
+
+The following file provides syntax highlighting for Python (`.py`) files.
+
+```lua
+-- /vim/syntax/py.lua
+
+local function syntax()
+    -- Words shown with yellow text on a blue background.
+    -- These are the same color as keywords[1], so use this for
+    -- annotation markers found in comments.
+    local todos = {"TODO", "XXX", "FIXME", "NOTE", "HACK", "BUG"}
+
+    -- Two keyword groups.
+    -- keywords[1]  → yellow text, blue background (same as todos)
+    -- keywords[2]  → table containing two sub-lists:
+    --   [1]  black text, light-blue background
+    --   [2]  black text, purple background
+    local keywords = {
+        -- Control flow, boolean literals, exception handling
+        {
+            "if", "elif", "else", "for", "while", "return",
+            "def", "class", "import", "from", "as", "with",
+            "try", "except", "finally", "raise", "pass",
+            "break", "continue", "yield", "lambda",
+            "True", "False", "None"
+        },
+        {
+            -- Light-blue group: type/scope modifiers
+            {"global", "nonlocal", "del", "assert", "in", "not", "and", "or", "is"},
+            -- Purple group: built-in type names
+            {"int", "str", "float", "bool", "list", "dict", "tuple", "set", "type"}
+        }
+    }
+
+    -- The character that delimits string literals.
+    -- CCVim supports exactly one delimiter character.
+    local stringchar = "\""
+
+    -- The prefix that starts a single-line comment.
+    local commentstring = "#"
+
+    -- Punctuation characters to ignore when tokenising a line.
+    -- List any characters that might be attached to a keyword
+    -- but should not prevent it from being recognised.
+    local removedpunctuation = {}
+
+    -- Always "code" for source code files.
+    local type = "code"
+
+    -- Multi-line comment / docstring markers.
+    -- Python uses triple-quotes; pick the double-quote variant.
+    local multilinecommentstrings = {"\"\"\"", "\"\"\""}
+
+    return {todos, keywords, stringchar, commentstring, removedpunctuation, type, multilinecommentstrings}
+end
+
+return { syntax = syntax }
+```
+
+<Note>
+Python uses both `"` and `'` as string delimiters, but `stringchar` accepts only a single character. The file above highlights double-quoted strings; single-quoted strings will not be colored. This is a known limitation of the current syntax engine.
+</Note>
+
+## Limitations
+
+<Warning>
+The following constraints are inherent to the current syntax engine. They cannot be worked around in a syntax file.
+</Warning>
+
+- **One string delimiter only.** `stringchar` is a single character. Languages with multiple string delimiter styles (e.g. Python's `"` and `'`) can only have one highlighted.
+- **No multi-line string support.** CCVim's multi-line detection only handles comments (via `multilinecommentstrings`). Multi-line string literals that span several lines will not be highlighted correctly.
+- **Colors are fixed.** Syntax files cannot change which ComputerCraft colors are used. All keyword groups, strings, and comments always use the colors described in the reference table above.
+- **`lowperformance` mode disables MLC detection.** When CCVim is running in low-performance mode, multi-line comment spans are not computed and those lines will not be highlighted green.
+- **Whole-word keyword matching only.** A token must exactly equal an entry in the keyword list to be highlighted. There is no prefix or pattern matching.

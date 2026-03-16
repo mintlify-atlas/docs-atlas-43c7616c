@@ -1,0 +1,55 @@
+---
+title: "CLI Arguments"
+description: "Command-line argument reference for launching CCVim."
+---
+
+## Usage
+
+```
+vim [options] [file ...]
+```
+
+You can open one or more files by passing their paths as arguments. If a path points to a directory, the [file explorer](/reference/file-explorer) opens for that directory before any files are loaded.
+
+**Examples:**
+
+```sh
+# Open a single file
+vim myfile.lua
+
+# Open multiple files in separate tabs
+vim file1.lua file2.lua
+
+# Open a directory in the file explorer
+vim /rom/programs
+
+# Print version information and exit
+vim --version
+
+# Force terminal output (skip monitor peripheral detection)
+vim --term myfile.lua
+```
+
+---
+
+## Implemented arguments
+
+| Argument | Description |
+|----------|-------------|
+| `[file ...]` | One or more file or directory paths to open. Multiple files are opened as separate tabs |
+| `--version` | Print the CCVim version and release date, then exit |
+| `--term` | Force output to the terminal. Skips detection of an attached monitor peripheral |
+
+---
+
+## Unimplemented Vim arguments
+
+CCVim silently accepts (and ignores) a number of standard Vim argument flags. Passing them will not cause an error, but they have no effect.
+
+<Note>
+  These arguments exist in upstream Vim but are not implemented in CCVim. They are listed here for reference so you know they are safe to pass without breaking the editor.
+</Note>
+
+The silently-ignored arguments are:
+
+`--` `-v` `-e` `-E` `-s` `-d` `-y` `-R` `-Z` `-m` `-M` `-b` `-l` `-C` `-N` `-V` `-D` `-n` `-r` `-L` `-T` `--not-a-term` `--ttyfail` `-u` `--noplugin` `-p` `-o` `-O` `+` `--cmd` `-c` `-S` `-w` `-W` `-x` `--startuptime` `-i` `--clean` `-h` `--help`

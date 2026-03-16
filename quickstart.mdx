@@ -1,80 +1,121 @@
 ---
 title: "Quickstart"
-description: "Start building awesome documentation in minutes"
+description: "Open your first file and start editing with CCVim"
 ---
 
-## Get started in three steps
+This guide gets you from a fresh CCVim installation to confidently editing files in under five minutes.
 
-Get your documentation site running locally and make your first customization.
+## Open a file
 
-### Step 1: Set up your local environment
+From the ComputerCraft shell, run CCVim with a filename:
 
-<AccordionGroup>
-  <Accordion icon="copy" title="Clone your docs locally">
-    During the onboarding process, you created a GitHub repository with your docs content if you didn't already have one. You can find a link to this repository in your [dashboard](https://dashboard.mintlify.com).
+```bash
+vim myfile.lua
+```
+
+If the file does not exist, CCVim creates it when you first save. If you run `vim` with no arguments, you see the welcome screen. Press `:q` then `Enter` to exit it.
+
+## Your first edit
+
+<Steps>
+  <Step title="Enter insert mode">
+    Press `i` to enter insert mode. The status bar at the bottom shows `-- INSERT --`.
     
-    To clone the repository locally so that you can make and preview changes to your docs, follow the [Cloning a repository](https://docs.github.com/en/repositories/creating-and-managing-repositories/cloning-a-repository) guide in the GitHub docs.
-  </Accordion>
-  <Accordion icon="rectangle-terminal" title="Start the preview server">
-    1. Install the Mintlify CLI: `npm i -g mint`
-    2. Navigate to your docs directory and run: `mint dev`
-    3. Open `http://localhost:3000` to see your docs live!
+    <Note>
+      CCVim uses **TAB** to exit insert mode, not Escape. This is the most important difference from standard Vim.
+    </Note>
+  </Step>
+  <Step title="Type your code">
+    Type normally. Use the arrow keys or `Backspace` to correct mistakes.
     
-    <Tip>Your preview updates automatically as you edit files.</Tip>
-  </Accordion>
-</AccordionGroup>
-
-### Step 2: Deploy your changes
-
-<AccordionGroup>
-  <Accordion icon="github" title="Install our GitHub app">
-    Install the Mintlify GitHub app from your [dashboard](https://dashboard.mintlify.com/settings/organization/github-app).
+    ```lua
+    print("Hello from CCVim!")
+    ```
+  </Step>
+  <Step title="Return to normal mode">
+    Press `TAB` to exit insert mode and return to normal mode. The `-- INSERT --` indicator disappears.
+  </Step>
+  <Step title="Save the file">
+    Type `:w` then press `Enter`. The status bar confirms the save.
+  </Step>
+  <Step title="Quit">
+    Type `:q` then press `Enter` to exit CCVim.
     
-    Our GitHub app automatically deploys your changes to your docs site, so you don't need to manage deployments yourself.
-</Accordion>
-<Accordion icon="palette" title="Update your site name and colors">
-    For a first change, let's update the name and colors of your docs site.
+    To save and quit in one command, use `:wq`.
+  </Step>
+</Steps>
 
-    1. Open `docs.json` in your editor.
-    2. Change the `"name"` field to your project name.
-    3. Update the `"colors"` to match your brand.
-    4. Save and see your changes instantly at `http://localhost:3000`.
+## Essential keybindings
 
-    <Tip>Try changing the primary color to see an immediate difference!</Tip>
-  </Accordion>
-</AccordionGroup>
+### Moving around
 
-### Step 3: Go live
+| Key | Action |
+|-----|--------|
+| `h` | Move left |
+| `j` | Move down |
+| `k` | Move up |
+| `l` | Move right |
+| `0` | Beginning of line |
+| `$` | End of line |
+| `gg` | Go to first line |
+| `G` | Go to last line |
+| `[N]G` | Go to line N |
 
-<Accordion icon="rocket" title="Publish your docs">
-  1. Commit and push your changes.
-  2. Your docs will update and be live in moments!
-</Accordion>
+### Entering edit modes
+
+| Key | Action |
+|-----|--------|
+| `i` | Insert before cursor |
+| `a` | Append after cursor |
+| `I` | Insert at line start |
+| `A` | Append at line end |
+| `o` | New line below, enter insert |
+| `O` | New line above, enter insert |
+| `TAB` | Return to normal mode |
+
+### Editing in normal mode
+
+| Key | Action |
+|-----|--------|
+| `x` | Delete character under cursor |
+| `dd` | Delete (cut) current line |
+| `yy` | Yank (copy) current line |
+| `p` | Paste after cursor |
+| `P` | Paste before cursor |
+
+### Ex commands
+
+| Command | Action |
+|---------|--------|
+| `:w` | Save file |
+| `:q` | Quit |
+| `:wq` | Save and quit |
+| `:q!` | Quit without saving |
+| `:e [file]` | Open a file |
+
+## Search in a file
+
+In normal mode, press `/` then type a search term and press `Enter`. CCVim jumps to the first match. Press `n` to jump to the next match, `N` for the previous.
+
+```
+/print
+```
+
+Press `?` instead of `/` to search backward.
 
 ## Next steps
 
-Now that you have your docs running, explore these key features:
-
 <CardGroup cols={2}>
-
-<Card title="Write Content" icon="pen-to-square" href="/essentials/markdown">
-  Learn MDX syntax and start writing your documentation.
-</Card>
-
-<Card title="Customize style" icon="palette" href="/essentials/settings">
-  Make your docs match your brand perfectly.
-</Card>
-
-<Card title="Add code examples" icon="square-code" href="/essentials/code">
-  Include syntax-highlighted code blocks.
-</Card>
-
-<Card title="API documentation" icon="code" href="/api-reference/introduction">
-  Auto-generate API docs from OpenAPI specs.
-</Card>
-
+  <Card title="Modes" icon="pen-to-square" href="/usage/modes">
+    Learn all the ways to enter and exit editing modes
+  </Card>
+  <Card title="Keybinding reference" icon="keyboard" href="/reference/keybindings">
+    Complete table of all normal mode keybindings
+  </Card>
+  <Card title="Ex commands" icon="terminal" href="/reference/ex-commands">
+    All `:` commands for file management, settings, and more
+  </Card>
+  <Card title="Configuration" icon="gear" href="/configuration/vimrc">
+    Set up your `.vimrc` to customize CCVim on startup
+  </Card>
 </CardGroup>
-
-<Note>
-  **Need help?** See our [full documentation](https://mintlify.com/docs) or join our [community](https://mintlify.com/community).
-</Note>

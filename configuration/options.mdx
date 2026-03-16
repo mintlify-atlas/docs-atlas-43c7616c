@@ -1,0 +1,133 @@
+---
+title: "Options"
+description: "All configurable options in CCVim, their defaults, and how to set them"
+---
+
+Options control how CCVim behaves. You can set options in your [`.vimrc`](/configuration/vimrc) to apply them at startup, or with `:set` during a session.
+
+```text
+" In .vimrc (permanent)
+set number
+
+" In a session (current session only)
+:set number
+```
+
+To disable a boolean option during a session, prefix the option name with `no`:
+
+```text
+:set nonumber
+:set noautoindent
+```
+
+The `no` prefix is not supported in `.vimrc` — simply omit an option from `.vimrc` to leave it at its default.
+
+## Display
+
+| Option | Default | Description |
+|--------|---------|-------------|
+| `number` | off | Show line numbers in a 4-character gutter on the left. Lines up to 9999 display their number; lines 10,000 and above show `10k+`. |
+
+### `number`
+
+Enables a line number gutter on the left side of the screen. The gutter is 4 characters wide. When active, it shifts the text area to the right by 4 columns.
+
+```text
+set number
+```
+
+```text
+   1 local function greet()
+   2     print("hello")
+   3 end
+```
+
+## Editing
+
+| Option | Default | Description |
+|--------|---------|-------------|
+| `autoindent` | off | When you press Enter in insert mode, the new line is indented to match the leading whitespace of the line above. |
+
+### `autoindent`
+
+Copies the leading spaces (and tabs) from the current line to the next line when you press Enter in insert mode. This is useful for writing structured code without manually indenting each line.
+
+```text
+set autoindent
+```
+
+## Performance
+
+| Option | Default | Description |
+|--------|---------|-------------|
+| `lowperformance` | off | Disable multi-line comment detection. Reduces CPU usage on slow ComputerCraft computers. |
+
+### `lowperformance`
+
+Skips the scan that identifies which lines fall inside a multi-line comment block. On underpowered ComputerCraft systems, this scan can cause noticeable lag when editing large files. Enabling this option means multi-line comments are not highlighted in green — only single-line comments are.
+
+```text
+set lowperformance
+```
+
+<Note>
+  `lowperformance` also goes by the name `lowspec` when used with the `:set` ex command during a session. In `.vimrc`, use `lowperformance`.
+</Note>
+
+## Search
+
+| Option | Short form | Default | Description |
+|--------|------------|---------|-------------|
+| `ignorecase` | `ic` | off | Make `/` and `?` searches case-insensitive. |
+
+### `ignorecase` / `ic`
+
+When enabled, searching for `hello` also matches `Hello`, `HELLO`, and any other capitalization. Both `ignorecase` and `ic` set the same option.
+
+```text
+set ignorecase
+```
+
+or equivalently:
+
+```text
+set ic
+```
+
+## Input
+
+| Option | Default | Description |
+|--------|---------|-------------|
+| `mobile` | off | Enable touchscreen mode — tapping the bottom status line exits insert or append mode. |
+
+### `mobile`
+
+Designed for ComputerCraft pocket computers and touchscreen monitors. When enabled, a click or tap on the bottom row of the screen (the status bar) exits insert and append mode, equivalent to pressing **TAB**. This makes CCVim usable without a physical keyboard.
+
+```text
+set mobile
+```
+
+## Key remapping
+
+Key remaps are not set with `set`. Use the `map` command instead:
+
+```text
+map [from] [to]
+```
+
+See [.vimrc — `map` command](/configuration/vimrc#map) for full details.
+
+## All options at a glance
+
+| Option | Aliases | Category | Default | Persistent via .vimrc |
+|--------|---------|----------|---------|----------------------|
+| `number` | — | Display | off | Yes |
+| `autoindent` | — | Editing | off | Yes |
+| `lowperformance` | `lowspec` (`:set` only) | Performance | off | Yes |
+| `ignorecase` | `ic` | Search | off | Yes |
+| `mobile` | — | Input | off | Yes |
+
+<Tip>
+  All options default to off. A minimal `.vimrc` only needs to list the options you want to turn on.
+</Tip>

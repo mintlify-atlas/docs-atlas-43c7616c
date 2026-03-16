@@ -1,0 +1,115 @@
+---
+title: "Modes"
+description: "Normal, insert, and append modes — how to enter and exit each"
+---
+
+CCVim is a modal editor. Your keypresses mean different things depending on which mode you are in. Understanding the three modes is the foundation of using CCVim effectively.
+
+<CardGroup cols={3}>
+  <Card title="Normal mode" icon="arrow-pointer">
+    The default mode. Every keystroke is a command — navigate, delete, copy, paste, or enter ex commands.
+  </Card>
+  <Card title="Insert mode" icon="i-cursor">
+    Type text before the cursor position. Press `i` from normal mode to enter.
+  </Card>
+  <Card title="Append mode" icon="pen">
+    Type text after the cursor position. Press `a` from normal mode to enter.
+  </Card>
+</CardGroup>
+
+## Normal mode
+
+CCVim starts in normal mode. There is no indicator in the status bar — the bottom line is empty unless a message is displayed.
+
+In normal mode, every key is a command. You cannot type text directly. Normal mode is where you:
+
+- Navigate the cursor with `h`, `j`, `k`, `l` and other movement keys
+- Delete, copy, and paste text
+- Enter ex commands with `:`
+- Trigger a search with `/` or `?`
+- Switch to insert or append mode
+
+You return to normal mode from any editing mode by pressing **TAB**.
+
+<Note>
+  CCVim uses **TAB** to exit editing modes instead of Escape. This is intentional: ComputerCraft terminals do not reliably receive the Escape key. TAB has no special role in normal mode itself.
+</Note>
+
+## Insert mode
+
+Insert mode lets you type text at the current cursor position. Characters you type are inserted *before* the cursor.
+
+<Steps>
+  <Step title="Enter insert mode">
+    Press `i` in normal mode. The status bar at the bottom of the screen shows `-- INSERT --`.
+  </Step>
+  <Step title="Type your text">
+    Type normally. Printable characters are inserted into the file at the cursor position. The cursor advances as you type.
+
+    You can also use the arrow keys to move the cursor while inside insert mode.
+  </Step>
+  <Step title="Delete with backspace">
+    Press **Backspace** to delete the character before the cursor. If the cursor is at the beginning of a line, backspace merges the current line with the one above it.
+  </Step>
+  <Step title="Break a line">
+    Press **Enter** to split the current line at the cursor position. If autoindent is enabled, the new line is automatically indented to match the indentation of the previous line.
+  </Step>
+  <Step title="Return to normal mode">
+    Press **TAB** to exit insert mode and return to normal mode. The `-- INSERT --` indicator disappears.
+  </Step>
+</Steps>
+
+### Additional ways to enter insert mode
+
+| Key | Behavior |
+|-----|----------|
+| `i` | Insert before cursor |
+| `I` | Insert at the beginning of the current line |
+| `o` | Open a new blank line below the current line and enter insert mode |
+| `O` | Open a new blank line above the current line and enter insert mode |
+| `s` | Delete the character under the cursor and enter insert mode |
+| `S` | Clear the entire current line and enter insert mode |
+| `c` + `c` | Clear the current line and enter insert mode |
+| `c` + `$` | Delete from the cursor to end of line and enter insert mode |
+| `C` | Delete from the cursor to end of line and enter insert mode |
+| `c` + `i` + `w` | Delete the word under the cursor and enter insert mode |
+| `c` + `w` | Delete from cursor to end of word and enter insert mode |
+
+## Append mode
+
+Append mode is functionally identical to insert mode, but the cursor moves one position to the right before editing begins. This means characters you type are inserted *after* the cursor position you were on when you pressed `a`.
+
+<Steps>
+  <Step title="Enter append mode">
+    Press `a` in normal mode. The cursor moves one character to the right and the status bar shows `-- INSERT --`.
+  </Step>
+  <Step title="Type your text">
+    Type normally. Appended characters appear after the original cursor position.
+  </Step>
+  <Step title="Return to normal mode">
+    Press **TAB** to exit and return to normal mode.
+  </Step>
+</Steps>
+
+### Additional ways to enter append mode
+
+| Key | Behavior |
+|-----|----------|
+| `a` | Append after cursor |
+| `A` | Append at the end of the current line |
+
+<Tip>
+  Use `A` to quickly add text to the end of the current line without navigating there first.
+</Tip>
+
+## Mobile and touchscreen
+
+On touchscreen devices, tapping the bottom line of the screen (the status bar) also exits insert or append mode. Enable this behavior with `:set mobile` or by adding `set mobile` to your `.vimrc`.
+
+## Mode summary
+
+| Mode | Indicator | Enter | Exit |
+|------|-----------|-------|------|
+| Normal | *(none)* | **TAB** from insert/append | — |
+| Insert | `-- INSERT --` | `i`, `I`, `o`, `O`, `s`, `S`, `c` combos | **TAB** |
+| Append | `-- INSERT --` | `a`, `A` | **TAB** |

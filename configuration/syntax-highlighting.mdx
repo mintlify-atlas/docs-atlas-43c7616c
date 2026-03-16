@@ -1,0 +1,197 @@
+---
+title: "Syntax highlighting"
+description: "How CCVim highlights code, how to enable it, and how to create syntax files for new languages"
+---
+
+CCVim supports syntax highlighting for code files. When a syntax file exists for the current filetype, CCVim colors keywords, strings, comments, and TODO markers as you edit.
+
+## Enabling syntax highlighting
+
+Syntax highlighting is off by default. Enable it in your `.vimrc`:
+
+```text
+syntax on
+```
+
+You can also toggle it during a session with an ex command:
+
+| Command | Description |
+|---------|-------------|
+| `:syntax on` | Enable syntax highlighting for the current session |
+| `:syntax off` | Disable syntax highlighting for the current session |
+
+## Filetype detection
+
+When you open a file, CCVim reads the file extension and looks for a matching syntax file at:
+
+```text
+/vim/syntax/[extension].lua
+```
+
+For example, opening `script.lua` causes CCVim to load `/vim/syntax/lua.lua`. If no matching syntax file exists, the file is displayed without highlighting.
+
+### Manual filetype override
+
+If the extension does not match a syntax file, or you want to force a different filetype, set it manually with:
+
+```text
+:set filetype=[type]
+```
+
+For example, to apply Lua highlighting to a file named `startup`:
+
+```text
+:set filetype=lua
+```
+
+CCVim then loads `/vim/syntax/lua.lua` for that buffer.
+
+## Built-in syntax files
+
+CCVim ships with one built-in syntax file:
+
+| Filetype | File | Extension |
+|----------|------|-----------|
+| Lua | `/vim/syntax/lua.lua` | `.lua` |
+
+All other filetypes require you to create a syntax file yourself.
+
+## Color reference
+
+CCVim maps each syntax element to a fixed color pair. These colors come from ComputerCraft's 16-color palette and cannot be customized per-theme.
+
+| Element | Text color | Background color |
+|---------|-----------|------------------|
+| TODO markers | Yellow | Blue |
+| Type keywords | Light blue | Black |
+| Control flow keywords | Purple | Black |
+| Strings | Red | Black |
+| Comments (single-line) | Green | Black |
+| Multi-line comments | Green | Black |
+| Plain text | White | Black |
+
+<Note>
+  Multi-line comment highlighting is disabled when `set lowperformance` is active, because detecting comment boundaries across the whole file is expensive on slow hardware.
+</Note>
+
+## Creating a syntax file
+
+A syntax file is a Lua module that returns a `syntax` function. That function returns a table with seven elements in a specific order. CCVim calls `syntax()` each time it renders a line.
+
+### File location
+
+Place your syntax file at:
+
+```text
+/vim/syntax/[extension].lua
+```
+
+The filename (without `.lua`) must match the file extension you want to highlight. For example, `/vim/syntax/py.lua` would apply to `.py` files.
+
+### Syntax table structure
+
+The `syntax()` function must return exactly seven values in this order:
+
+```lua
+return {todos, keywords, stringchar, commentstring, removedpunctuation, type, multilinecommentstrings}
+```
+
+| Index | Name | Type | Description |
+|-------|------|------|-------------|
+| 1 | `todos` | `string[]` | Words highlighted as TODO markers |
+| 2 | `keywords` | `{string[], string[]}` | Two sub-tables: `[1]` control flow keywords, `[2]` type keywords |
+| 3 | `stringchar` | `string` | The string delimiter character (e.g. `"\""`) |
+| 4 | `commentstring` | `string` | The single-line comment prefix (e.g. `"--"`) |
+| 5 | `removedpunctuation` | `string[]` | Punctuation characters to exclude from word boundary detection |
+| 6 | `type` | `string` | File type category (use `"code"` for source files) |
+| 7 | `multilinecommentstrings` | `{string, string}` | `{start, end}` delimiters for multi-line comments |
+
+### Annotated example
+
+This is the complete built-in Lua syntax file with inline annotations:
+
+```lua
+-- syntax/lua.lua
+
+local function syntax()
+    -- Words displayed with yellow text on a blue background
+    local todos = {"TODO", "XXX", "FIXME", "NOTE"}
+
+    -- keywords[1]: control flow — displayed in purple
+    -- keywords[2]: type keywords — displayed in light blue
+    local keywords = {
+        {"function", "if", "while", "for", "do", "return",
+         "else", "end", "then", "repeat", "until", "elseif",
+         "true", "false"},
+        {"local", "nil"}
+    }
+
+    -- The character that starts and ends a string literal
+    local stringchar = "\""
+
+    -- The prefix that marks the rest of a line as a comment
+    local commentstring = "--"
+
+    -- Punctuation ignored when splitting a line into words
+    local removedpunctuation = {"~"}
+
+    -- Category of this file. Use "code" for source files.
+    local type = "code"
+
+    -- Multi-line comment delimiters: {opening, closing}
+    local multilinecommentstrings = {"--[[", "]]"}
+
+    return {todos, keywords, stringchar, commentstring,
+            removedpunctuation, type, multilinecommentstrings}
+end
+
+return { syntax = syntax }
+```
+
+### Adding a syntax file for a new language
+
+<Steps>
+  <Step title="Identify the file extension">
+    Decide which extension your syntax file will apply to. For example, use `py` for Python files (`.py`).
+  </Step>
+  <Step title="Create the file">
+    Open a new file in CCVim:
+
+    ```text
+    vim /vim/syntax/py.lua
+    ```
+  </Step>
+  <Step title="Write the syntax function">
+    Fill in the seven fields using the structure above. For Python:
+
+    ```lua
+    local function syntax()
+        local todos = {"TODO", "XXX", "FIXME", "NOTE", "HACK"}
+        local keywords = {
+            {"if", "elif", "else", "for", "while", "def",
+             "class", "return", "import", "from", "with",
+             "as", "pass", "break", "continue", "lambda",
+             "try", "except", "finally", "raise", "yield",
+             "True", "False"},
+            {"None", "self"}
+        }
+        local stringchar = "\""
+        local commentstring = "#"
+        local removedpunctuation = {}
+        local type = "code"
+        local multilinecommentstrings = {"\"\"\"", "\"\"\""}
+        return {todos, keywords, stringchar, commentstring,
+                removedpunctuation, type, multilinecommentstrings}
+    end
+
+    return { syntax = syntax }
+    ```
+  </Step>
+  <Step title="Save and test">
+    Save with `:w`, then open a file with the target extension. If `syntax on` is active, CCVim loads your new syntax file automatically.
+  </Step>
+</Steps>
+
+<Tip>
+  When CCVim highlights strings, it overwrites keyword colors on any characters inside the string delimiters. Keywords inside strings are not highlighted — the string color takes priority.
+</Tip>

@@ -1,0 +1,128 @@
+---
+title: "Editing"
+description: "Inserting, deleting, changing, copying, and pasting text"
+---
+
+All editing commands work in normal mode unless otherwise noted. Most editing operations also save the affected text to the copy buffer so it can be pasted with `p` or `P`.
+
+## Entering insert mode
+
+See the [Modes](/usage/modes) page for a full description of insert and append mode. The table below summarizes the ways to start editing:
+
+| Key | Behavior |
+|-----|----------|
+| `i` | Insert before the cursor |
+| `I` | Insert at the beginning of the current line |
+| `a` | Append after the cursor |
+| `A` | Append at the end of the current line |
+| `o` | Open a new line below and enter insert mode |
+| `O` | Open a new line above and enter insert mode |
+
+## Typing and backspace (inside insert/append mode)
+
+While in insert or append mode:
+
+- Type any printable character to insert it at the cursor
+- **Backspace** deletes the character before the cursor
+- If the cursor is at column 1, **Backspace** merges the current line with the line above
+- **Enter** splits the line at the cursor position
+- Arrow keys move the cursor without leaving insert mode
+- **TAB** exits back to normal mode
+
+### Autoindent
+
+When autoindent is enabled (`:set autoindent`), pressing **Enter** in insert mode automatically indents the new line to match the indentation of the current line. Leading spaces are counted and replicated on the new line.
+
+Enable autoindent permanently by adding `set autoindent` to `/vim/.vimrc`.
+
+## Deleting text
+
+### Single characters
+
+| Key | Behavior |
+|-----|----------|
+| `x` | Delete the character under the cursor (saved to copy buffer) |
+
+### Lines
+
+| Key | Behavior |
+|-----|----------|
+| `dd` | Delete (cut) the current line |
+| `D` | Delete from the cursor position to the end of the line |
+| `[count]dd` | Delete `[count]` lines starting from the current line |
+
+`dd` and `D` both save the deleted content to the copy buffer. The deleted content can be pasted back with `p` or `P`.
+
+### Words and selections
+
+| Key | Behavior |
+|-----|----------|
+| `dw` | Delete from the cursor to the end of the current word |
+| `diw` | Delete the word under the cursor (inner word, no surrounding space) |
+| `daw` | Delete the word under the cursor including one surrounding space |
+| `d$` | Delete from the cursor to the end of the line |
+
+## Changing text
+
+Change commands delete text and immediately enter insert mode so you can type a replacement.
+
+| Key | Behavior |
+|-----|----------|
+| `cc` | Clear the current line and enter insert mode |
+| `C` | Delete from cursor to end of line and enter insert mode |
+| `c$` | Delete from cursor to end of line and enter insert mode |
+| `cw` | Delete from cursor to end of word and enter insert mode |
+| `ce` | Delete from cursor to end of word and enter insert mode |
+| `ciw` | Delete the word under the cursor and enter insert mode |
+| `s` | Delete the character under the cursor and enter insert mode |
+| `S` | Clear the current line and enter insert mode |
+
+<Tip>
+  `cc` and `S` do the same thing: clear the line and enter insert mode. `C` and `c$` also do the same thing.
+</Tip>
+
+## Replacing a character
+
+| Key | Behavior |
+|-----|----------|
+| `r[char]` | Replace the character under the cursor with `[char]`, stay in normal mode |
+
+After pressing `r`, type the replacement character. The cursor stays in normal mode — you do not need to press TAB.
+
+## Copying (yanking)
+
+Copied text is stored in a single copy buffer. There is one buffer for the whole session.
+
+| Key | Behavior |
+|-----|----------|
+| `yy` | Yank (copy) the current line |
+| `[count]yy` | Yank `[count]` lines starting from the current line |
+| `yw` | Yank from the cursor to the end of the current word |
+| `yiw` | Yank the word under the cursor (no surrounding space) |
+| `yaw` | Yank the word under the cursor with one surrounding space |
+| `y$` | Yank from the cursor to the end of the line |
+
+## Pasting
+
+| Key | Behavior |
+|-----|----------|
+| `p` | Paste after the cursor (or below the current line for line yanks) |
+| `P` | Paste before the cursor (or above the current line for line yanks) |
+
+The paste behavior depends on what was most recently copied or deleted:
+
+- **Line-type buffer** (`dd`, `yy`, `[count]yy`, `[count]dd`): the content is inserted as a new line below (`p`) or above (`P`) the cursor's current line.
+- **Text-type buffer** (`x`, `dw`, `yw`, `D`, `d$`, `y$`, etc.): the content is inserted inline at the cursor position.
+
+## Joining lines
+
+| Key | Behavior |
+|-----|----------|
+| `J` | Join the next line onto the end of the current line, separated by a space |
+| `gJ` | Join the next line onto the end of the current line with no space |
+
+## Undo and redo
+
+<Warning>
+  CCVim does not currently implement undo or redo. Changes cannot be reversed within the editor. If you delete something accidentally, you will need to retype it or quit without saving using `:q!` if you have not yet written the file.
+</Warning>

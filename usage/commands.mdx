@@ -1,0 +1,148 @@
+---
+title: "Commands"
+description: "Ex commands — the colon commands available in CCVim"
+---
+
+Ex commands are entered in normal mode by pressing `:`. The command prompt appears at the bottom of the screen. Type a command and press **Enter** to run it. Press **Backspace** to delete characters. The prompt clears when the command finishes or is cancelled.
+
+## File commands
+
+### Saving
+
+| Command | Description |
+|---------|-------------|
+| `:w` | Save the current file |
+| `:w [filename]` | Save the current buffer to a different file |
+| `:w!` | Force save (same behavior as `:w` for writable files) |
+| `:sav [filename]` | Save as a new file; errors if the file already exists |
+| `:sav! [filename]` | Save as, overwriting the destination if it exists |
+| `:saveas [filename]` | Alias for `:sav` |
+
+<Note>
+  If the current buffer has no filename and you run `:w` without an argument, CCVim shows the error `No file name`. Provide a filename: `:w myfile.lua`.
+</Note>
+
+### Quitting
+
+| Command | Description |
+|---------|-------------|
+| `:q` | Quit the current file. Fails if there are unsaved changes. |
+| `:q!` | Force quit, discarding unsaved changes |
+| `:wq` | Save the current file and quit |
+| `:x` | Alias for `:wq` |
+| `:tabc` | Close the current tab. Fails if there are unsaved changes. |
+| `:tabc!` | Force close the current tab |
+| `:tabclose` | Alias for `:tabc` |
+| `:tabclose!` | Alias for `:tabc!` |
+
+When you close the last open file, CCVim exits and returns you to the ComputerCraft shell.
+
+### Opening files
+
+| Command | Description |
+|---------|-------------|
+| `:e [filename]` | Open a file in a new tab |
+| `:ex [filename]` | Alias for `:e` |
+| `:r [filename]` | Read a file and append its contents after the current line |
+| `:read [filename]` | Alias for `:r` |
+
+If the file passed to `:e` does not exist, CCVim opens an empty buffer with `[New File]` shown in the status bar. The file is created on disk when you first save with `:w`.
+
+## Navigation commands
+
+| Command | Description |
+|---------|-------------|
+| `:[number]` | Jump to the specified line number |
+
+```
+:42
+```
+
+This moves the cursor to line 42. You can also use `[count]G` in normal mode for the same effect.
+
+## Settings
+
+The `:set` command changes editor options for the current session.
+
+### Boolean options
+
+| Command | Description |
+|---------|-------------|
+| `:set number` | Enable line numbers (4-character gutter on the left) |
+| `:set nonumber` | Disable line numbers |
+| `:set autoindent` | Enable automatic indentation on Enter |
+| `:set noautoindent` | Disable autoindent |
+| `:set ignorecase` | Make searches case-insensitive |
+| `:set ic` | Short form of `:set ignorecase` |
+| `:set noignorecase` | Restore case-sensitive search |
+| `:set noic` | Short form of `:set noignorecase` |
+| `:set mobile` | Enable touchscreen mode (tap status bar to exit insert) |
+| `:set nomobile` | Disable mobile mode |
+| `:set lowspec` | Enable low-performance mode (disables multi-line comment highlighting) |
+| `:set nolowspec` | Disable low-performance mode |
+
+### Value options
+
+| Command | Description |
+|---------|-------------|
+| `:set filetype=[type]` | Set the syntax filetype for the current buffer (e.g. `lua`, `txt`) |
+| `:set scale=[number]` | Set the text scale on an attached monitor |
+
+<Tip>
+  Options set with `:set` apply only to the current session. To make them permanent, add the corresponding `set` lines to your `/vim/.vimrc` file.
+</Tip>
+
+## Syntax highlighting
+
+| Command | Description |
+|---------|-------------|
+| `:syntax on` | Enable syntax highlighting |
+| `:syntax off` | Disable syntax highlighting |
+
+Syntax highlighting requires a syntax file at `/vim/syntax/[filetype].lua` for the current filetype. When you open a file, CCVim automatically detects the filetype from the file extension and loads the matching syntax file if one exists.
+
+## Key remapping
+
+Key remappings are defined in `/vim/.vimrc` — they cannot be added with a live `:map` command during a session.
+
+In your `.vimrc`, use:
+
+```
+map [from] [to]
+```
+
+For example, to remap `j` to `k`:
+
+```
+map j k
+```
+
+Remappings apply to all character events in both normal mode and the insert/append mode loop.
+
+## Ctrl emulation
+
+ComputerCraft terminals may not support all Ctrl key combinations. CCVim provides the `:ctrl` command to emulate them.
+
+| Command | Description |
+|---------|-------------|
+| `:ctrl` | Wait for the next keypress and emulate Ctrl + that key |
+| `:ctrl [key]` | Immediately emulate Ctrl + the specified key |
+
+### Supported Ctrl combinations
+
+| Key | Effect |
+|-----|--------|
+| `:ctrl d` | Scroll down half a page |
+| `:ctrl u` | Scroll up half a page |
+| `:ctrl f` | Scroll forward one full page |
+| `:ctrl b` | Scroll backward one full page |
+| `:ctrl e` | Scroll the view down one line (cursor moves up relative to file) |
+| `:ctrl y` | Scroll the view up one line (cursor moves down relative to file) |
+
+```
+:ctrl d
+```
+
+## Tab management
+
+See the [Tabs](/usage/tabs) page for the full list of tab commands including `:tabn`, `:tabp`, `:tabm`, `:tabo`, and `:tabnew`.

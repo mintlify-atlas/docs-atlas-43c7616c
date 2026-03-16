@@ -1,0 +1,165 @@
+---
+title: "Navigation"
+description: "Moving the cursor around a file in normal mode"
+---
+
+All navigation commands work in normal mode. Arrow keys also move the cursor in both normal mode and insert/append mode.
+
+## Basic movement
+
+| Key | Direction |
+|-----|-----------|
+| `h` | Left one character |
+| `l` | Right one character |
+| `j` | Down one line |
+| `k` | Up one line |
+
+Arrow keys do the same as `h`/`j`/`k`/`l` in normal mode.
+
+### Count prefix
+
+Prepend a number to `h`, `j`, `k`, or `l` to move that many positions at once:
+
+```
+5j    moves down 5 lines
+10l   moves right 10 characters
+3k    moves up 3 lines
+```
+
+## Line-level movement
+
+| Key | Behavior |
+|-----|----------|
+| `0` | Jump to column 1 (the very beginning of the line) |
+| `$` | Jump to the end of the current line |
+| `^` | Jump to the first non-space character on the current line |
+
+## Screen position
+
+| Key | Behavior |
+|-----|----------|
+| `H` | Move cursor to the top visible line |
+| `M` | Move cursor to the middle visible line |
+| `L` | Move cursor to the bottom visible line |
+
+## Word movement
+
+Word movement commands jump between word boundaries within a line.
+
+| Key | Behavior |
+|-----|----------|
+| `w` | Move to the beginning of the next word |
+| `W` | Same as `w`, but punctuation characters are treated as part of words |
+| `b` | Move to the beginning of the previous word |
+| `B` | Same as `b`, but punctuation-aware |
+| `e` | Move to the end of the next word |
+| `E` | Same as `e`, but punctuation-aware |
+| `ge` | Move to the end of the previous word |
+| `gE` | Same as `ge`, but punctuation-aware |
+
+<Note>
+  Word movement does not currently cross line boundaries. `w` and `b` only move within the current line.
+</Note>
+
+### Count prefix for word movement
+
+```
+3w    jump forward 3 word beginnings
+2b    jump back 2 word beginnings
+2e    jump to the 2nd next word end
+```
+
+## File-level movement
+
+| Key | Behavior |
+|-----|----------|
+| `gg` | Go to line 1 |
+| `G` | Go to the last line |
+| `[count]G` | Go to line `[count]` (e.g. `42G` goes to line 42) |
+| `[count]gg` | Go to line `[count]` (e.g. `10gg` goes to line 10) |
+| `:[number]` | Jump to line `[number]` via ex command |
+
+## Character search on the current line (f/F/t/T)
+
+These commands jump to a specific character on the current line.
+
+| Key | Behavior |
+|-----|----------|
+| `f[char]` | Jump forward to the next occurrence of `[char]` on the line |
+| `F[char]` | Jump backward to the previous occurrence of `[char]` on the line |
+| `t[char]` | Jump forward to just before the next `[char]` |
+| `T[char]` | Jump backward to just after the previous `[char]` |
+| `;` | Repeat the last `f`, `F`, `t`, or `T` in the same direction |
+| `,` | Repeat the last `f`, `F`, `t`, or `T` in the opposite direction |
+
+**Example:** To move to the next `(` on the current line:
+
+```
+f(
+```
+
+To then jump to the `(` before the cursor:
+
+```
+F(
+```
+
+To repeat that jump:
+
+```
+;
+```
+
+To repeat it in reverse:
+
+```
+,
+```
+
+### Count prefix for f/t
+
+Prefix a number to repeat the search `n` times:
+
+```
+2f(    jump to the 2nd ( after the cursor
+```
+
+## Bracket matching
+
+Press `%` when the cursor is on an opening bracket to jump to its matching closing bracket. The cursor must be positioned directly on the bracket character.
+
+| Opening | Closing |
+|---------|--------|
+| `(` | `)` |
+| `[` | `]` |
+| `{` | `}` |
+
+The match respects nesting: if multiple brackets are open, `%` jumps to the bracket that closes the one under the cursor.
+
+## Scrolling
+
+The view scrolls automatically as the cursor moves beyond the visible area. You can also scroll explicitly using the `:ctrl` command:
+
+| Command | Effect |
+|---------|--------|
+| `:ctrl d` | Scroll down half a page |
+| `:ctrl u` | Scroll up half a page |
+| `:ctrl f` | Scroll forward one full page |
+| `:ctrl b` | Scroll backward one full page |
+| `:ctrl e` | Scroll the view down one line without moving the cursor in the file |
+| `:ctrl y` | Scroll the view up one line without moving the cursor in the file |
+
+## g prefix commands
+
+The `g` key acts as a prefix for several secondary movement commands:
+
+| Key sequence | Behavior |
+|-------------|----------|
+| `gg` | Go to line 1 |
+| `ge` | Go to the end of the previous word |
+| `gE` | Go to the end of the previous WORD (punctuation-aware) |
+| `g_` | Jump to the last non-whitespace character on the current line |
+| `gJ` | Join the current line with the next line without inserting a space |
+| `gt` | Go to the next tab |
+| `gT` | Go to the previous tab |
+| `[count]gt` | Go to tab number `[count]` |
