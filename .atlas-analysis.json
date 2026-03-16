@@ -1,0 +1,95 @@
+{
+  "projectType": "cli-tool",
+  "projectName": "CCVim",
+  "projectDescription": "A Vim-inspired text editor for ComputerCraft computers in Minecraft, featuring insert/append modes, syntax highlighting, tabs, file explorer, and most standard Vim keybindings.",
+  "theme": "palm",
+  "primaryColor": "#00AA44",
+  "lightColor": "#00CC55",
+  "darkColor": "#007733",
+  "navigation": {
+    "tabs": [
+      {
+        "tab": "Documentation",
+        "groups": [
+          {
+            "group": "Get Started",
+            "pages": ["introduction", "installation", "quickstart"]
+          },
+          {
+            "group": "Usage",
+            "pages": [
+              "usage/modes",
+              "usage/commands",
+              "usage/navigation",
+              "usage/editing",
+              "usage/file-management",
+              "usage/search",
+              "usage/tabs"
+            ]
+          },
+          {
+            "group": "Configuration",
+            "pages": [
+              "configuration/vimrc",
+              "configuration/syntax-highlighting",
+              "configuration/options"
+            ]
+          },
+          {
+            "group": "Reference",
+            "pages": [
+              "reference/keybindings",
+              "reference/ex-commands",
+              "reference/file-explorer",
+              "reference/cli-arguments"
+            ]
+          },
+          {
+            "group": "Development",
+            "pages": [
+              "development/custom-syntax",
+              "development/contributing"
+            ]
+          }
+        ]
+      }
+    ]
+  },
+  "keyFeatures": [
+    "Insert and append editing modes with TAB to exit",
+    "Normal mode Vim keybindings (hjkl, w/b/e, f/F/t/T, etc.)",
+    "Syntax highlighting with extensible syntax files",
+    "Multi-file tab support",
+    "Built-in file explorer (CCFXP)",
+    "Copy/cut/paste buffer",
+    "Line numbers and autoindent",
+    "In-file search with wrap-around and history",
+    "Jump to matching bracket",
+    "fF/tT character jumping with ; and , repeat",
+    "Ex commands (:w, :q, :set, :ctrl, etc.)",
+    ".vimrc configuration file support",
+    "Monitor peripheral support",
+    "Mobile/touchscreen support",
+    "Automatic installation via pastebin"
+  ],
+  "publicApiSurface": [
+    "vim.lua [file] -- open a file for editing",
+    "vim.lua --version -- print version information",
+    "vim.lua --term -- force terminal output (skip monitor detection)",
+    ":w -- write/save file",
+    ":q -- quit",
+    ":wq -- write and quit",
+    ":q! -- force quit without saving",
+    ":e [file] -- open file",
+    ":set number -- enable line numbers",
+    ":set autoindent -- enable autoindent",
+    ":set ignorecase / :set ic -- case-insensitive search",
+    ":set lowperformance -- low-spec mode",
+    ":set mobile -- enable mobile/touchscreen mode",
+    ":set filetype=[type] -- manually set syntax filetype",
+    ":ctrl / :ctrl [key] -- emulate Ctrl key",
+    ":syntax on -- enable syntax highlighting",
+    ":map [from] [to] -- remap a key",
+    "syntax/[ext].lua -- custom syntax definition file"
+  ]
+}
